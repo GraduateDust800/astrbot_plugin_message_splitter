@@ -49,20 +49,28 @@ class MessageSplitterPlugin(Star):
 
         # 在系统提示词中添加分段指令说明
         split_instruction = f"""
-# Message Splitting Instruction
+如果你需要将回复拆分成多条独立的消息（即多个气泡），你必须**严格按照以下规则**使用关键字 `{self.split_keyword}`：
 
-如果你需要在回复中分段发送消息，请使用以下关键字来分隔消息：
+## 规则
+1. 将每条消息的文本内容用 `{self.split_keyword}` 直接连接。
+2. **绝对禁止**在 `{self.split_keyword}` 前后添加任何空格、换行符或其它字符（除非这些字符是消息内容本身的一部分）。
+3. 整个回复中除了消息文本和分隔关键字外，不得包含任何额外说明或格式标记。
 
-{self.split_keyword}
+## 正确示例
+你想发送两条消息：第一条是 `Hello World`，第二条是 `你好，世界`。  
+你的回复必须是：
+```
+Hello World{self.split_keyword}你好，世界
+```
 
-例如：
-- 如果你想发送两条消息 "Hello World" 和 "你好，世界"，你应该回复：
-Hello World
-{self.split_keyword}
-你好，世界
+## 错误示例（会导致解析失败）
+- ❌ `Hello World {self.split_keyword} 你好，世界`（关键字前后有空格）
+- ❌ `Hello World\n{self.split_keyword}\n你好，世界`（关键字前后有换行）
 
-- 这个关键字会被系统识别，并将消息分成多个独立的气泡发送
-- 不要在关键字前后添加多余的空格或换行，除非它是消息内容的一部分
+## 重要提醒
+- 系统会直接按照 `{self.split_keyword}` 分割你的回复，生成独立的消息气泡。
+- 如果你不需要分段发送，请正常回复，不要使用该关键字。
+- 请务必严格遵守上述格式，否则消息将无法正确分段。
 """
         req.system_prompt += split_instruction
         logger.debug("已向 LLM 系统提示词中注入分段指令")
