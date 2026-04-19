@@ -124,7 +124,7 @@ async def on_decorating_result(self, event: AstrMessageEvent) -> None:
 astrbot_plugin_message_splitter/
 ├── main.py              # 插件主文件 (3.6KB)
 ├── metadata.yaml        # 插件元数据 (0.3KB)
-├── config_example.json  # 配置示例 (0.1KB)
+├── _conf_schema.json      # 配置 schema 定义
 ├── README.md           # 插件说明文档 (3.4KB)
 ├── USAGE.md            # 详细使用指南 (4.5KB)
 ├── PLUGIN_INFO.md      # 插件信息概览 (3.9KB)

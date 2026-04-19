@@ -1,0 +1,14 @@
+{
+  "split_keyword": {
+    "type": "string",
+    "description": "消息分段关键字",
+    "hint": "LLM 使用此关键字来分段发送消息，每个分段会作为独立的气泡显示",
+    "default": "#split#"
+  },
+  "enabled": {
+    "type": "bool",
+    "description": "启用消息分段功能",
+    "hint": "开启后，插件会自动在 LLM 系统提示词中注入分段指令，并处理分段关键字",
+    "default": true
+  }
+}

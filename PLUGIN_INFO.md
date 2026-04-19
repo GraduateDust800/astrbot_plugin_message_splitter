@@ -6,7 +6,7 @@
 astrbot_plugin_message_splitter/
 ├── main.py              # 插件主文件，包含核心逻辑
 ├── metadata.yaml        # 插件元数据（名称、版本、作者等）
-├── config_example.json  # 配置示例文件
+├── _conf_schema.json    # 配置 schema 定义文件
 ├── README.md           # 插件说明文档
 ├── USAGE.md            # 详细使用指南
 └── LICENSE             # 许可证文件（如果需要）
@@ -31,12 +31,22 @@ author: GraduateDust800
 repo: https://github.com/GraduateDust800/astrbot_plugin_message_splitter
 ```
 
-### config_example.json
-配置示例，展示可用的配置选项：
+### _conf_schema.json
+配置 schema 定义文件，AstrBot 会根据此文件生成配置界面：
 ```json
 {
-  "split_keyword": "#split#",
-  "enabled": true
+  "split_keyword": {
+    "type": "string",
+    "description": "消息分段关键字",
+    "hint": "LLM 使用此关键字来分段发送消息",
+    "default": "#split#"
+  },
+  "enabled": {
+    "type": "bool",
+    "description": "启用消息分段功能",
+    "hint": "开启后自动处理分段关键字",
+    "default": true
+  }
 }
 ```
 

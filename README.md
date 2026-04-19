@@ -31,7 +31,7 @@ git clone https://github.com/GraduateDust800/astrbot_plugin_message_splitter.git
 
 ## 配置说明
 
-插件配置文件位于 `data/plugins/astrbot_plugin_message_splitter/config.json`：
+插件配置文件为 `_conf_schema.json`，AstrBot 会自动生成 `config.json` 文件：
 
 ```json
 {

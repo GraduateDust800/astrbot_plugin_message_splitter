@@ -20,7 +20,7 @@ data/plugins/astrbot_plugin_message_splitter/
 
 ## 配置选项
 
-插件支持以下配置选项（在 `config.json` 中）：
+插件使用 `_conf_schema.json` 定义配置结构，AstrBot 会自动生成 `config.json` 文件：
 
 ```json
 {
