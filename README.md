@@ -35,8 +35,24 @@ git clone https://github.com/GraduateDust800/astrbot_plugin_message_splitter.git
 
 ```json
 {
-  "split_keyword": "#split#",
-  "enabled": true
+  "split_keyword": {
+    "type": "string",
+    "description": "消息分段关键字",
+    "hint": "LLM 使用此关键字来分段发送消息，每个分段会作为独立的气泡显示",
+    "default": "#split#"
+  },
+  "enabled": {
+    "type": "bool",
+    "description": "启用消息分段功能",
+    "hint": "开启后，插件会自动在 LLM 系统提示词中注入分段指令，并处理分段关键字",
+    "default": true
+  },
+  "random_delay_range": {
+    "type": "list",
+    "description": "分段发送的随机延迟范围（秒）",
+    "hint": "格式为 [最小值, 最大值]，第一段不延迟，后续分段在此范围内随机延迟",
+    "default": [1, 3]
+  }
 }
 ```
 
@@ -55,9 +71,7 @@ git clone https://github.com/GraduateDust800/astrbot_plugin_message_splitter.git
 
 **LLM 回复内容：**
 ```
-Hello World
-#split#
-你好，世界
+Hello World#split#你好，世界
 ```
 
 **实际发送效果：**
@@ -70,11 +84,7 @@ Hello World
 
 **LLM 回复内容：**
 ```
-第一条消息
-#split#
-第二条消息
-#split#
-第三条消息
+第一条消息#split#第二条消息#split#第三条消息
 ```
 
 **实际发送效果：**
