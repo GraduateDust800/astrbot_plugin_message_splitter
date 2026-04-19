@@ -1,6 +1,6 @@
 name: astrbot_plugin_message_splitter
 display_name: 消息分段插件
 desc: "通过让LLM发送指定的关键字实现自然的消息分段。"
-version: v1.0.2
+version: v1.0.0
 author: GraduateDust800
 repo: https://github.com/GraduateDust800/astrbot_plugin_message_splitter
