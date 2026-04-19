@@ -1,6 +1,6 @@
 name: astrbot_plugin_message_splitter
 display_name: 消息分段插件
-desc: 通过 #split# 关键字将 LLM 回复分段发送，每个分段作为独立消息气泡
-version: v1.0.0
+desc: "通过 #split# 关键字将 LLM 回复分段发送，每个分段作为独立消息气泡"
+version: v1.0.2
 author: GraduateDust800
 repo: https://github.com/GraduateDust800/astrbot_plugin_message_splitter
