@@ -10,5 +10,11 @@
     "description": "启用消息分段功能",
     "hint": "开启后，插件会自动在 LLM 系统提示词中注入分段指令，并处理分段关键字",
     "default": true
+  },
+  "random_delay_range": {
+    "type": "list",
+    "description": "分段发送的随机延迟范围（秒）",
+    "hint": "格式为 [最小值, 最大值]，第一段不延迟，后续分段在此范围内随机延迟",
+    "default": [1, 3]
   }
 }

@@ -1,5 +1,8 @@
+import asyncio
+import random
+
 from astrbot.api import logger
-from astrbot.api.event import AstrMessageEvent, filter
+from astrbot.api.event import AstrMessageEvent, MessageChain, filter
 from astrbot.api.message_components import Plain
 from astrbot.api.provider import ProviderRequest
 from astrbot.api.star import Context, Star, register
@@ -12,15 +15,23 @@ from astrbot.api.star import Context, Star, register
     "1.0.0",
 )
 class MessageSplitterPlugin(Star):
-    def __init__(self, context: Context):
+    def __init__(self, context: Context, config: dict):
         super().__init__(context)
         self.context = context
         # 获取插件配置
-        self.config = context.get_config()
+        self.config = config
         # 分段关键字，默认为 #split#
         self.split_keyword = self.config.get("split_keyword", "#split#")
         # 是否启用功能
         self.enabled = self.config.get("enabled", True)
+        # 获取分段延迟范围，默认 [1, 3] 秒
+        delay_range = self.config.get("random_delay_range", [1, 3])
+        if isinstance(delay_range, list) and len(delay_range) >= 2:
+            self.delay_min = float(delay_range[0])
+            self.delay_max = float(delay_range[1])
+        else:
+            self.delay_min = 1.0
+            self.delay_max = 3.0
 
     async def initialize(self):
         """插件初始化"""
@@ -58,7 +69,7 @@ Hello World
 
     @filter.on_decorating_result()
     async def on_decorating_result(self, event: AstrMessageEvent) -> None:
-        """在发送消息前，处理 #split# 关键字，将消息分段"""
+        """在发送消息前,处理 #split# 关键字,将消息分段发送"""
         if not self.enabled:
             return
 
@@ -80,7 +91,7 @@ Hello World
         if self.split_keyword not in full_text:
             return
 
-        logger.debug("检测到分段关键字，开始处理消息分段")
+        logger.debug("检测到分段关键字,开始处理消息分段")
 
         # 按分段关键字分割消息
         parts = full_text.split(self.split_keyword)
@@ -90,17 +101,17 @@ Hello World
         if len(parts) <= 1:
             return
 
-        # 清空原有消息链
+        # 清空原消息链,避免 AstrBot 后续重复发送
         result.chain.clear()
 
-        # 将分割后的各部分重新添加到消息链中
+        # 分段延迟发送
         for i, part in enumerate(parts):
-            if i > 0:
-                # 在各部分之间添加换行符作为分隔
-                result.chain.append(Plain("\n"))
-            result.chain.append(Plain(part))
+            if i > 0:  # 第一段不延迟,后续段延迟
+                delay = random.uniform(self.delay_min, self.delay_max)
+                await asyncio.sleep(delay)
+            await event.send(MessageChain([Plain(part)]))
 
-        logger.info(f"消息已分割为 {len(parts)} 段")
+        logger.info(f"消息已分割为 {len(parts)} 段并分段发送")
 
     async def terminate(self):
         """插件卸载时的清理"""
